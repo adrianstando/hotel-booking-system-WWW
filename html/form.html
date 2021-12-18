@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    <script>
+        jQuery(function () {
+            var date = new Date();
+            var minDate = new Date()
+            minDate.setDate(date.getDate() - 1);
+
+            var datepicker = $('#arrivalDate');
+            if (datepicker.length > 0) {
+                datepicker.datepicker({
+                    format: "dd/mm/yyyy",
+                    startDate: '+1d',
+                    autoclose: true,
+                    uiLibrary: 'bootstrap4',
+                    minDate: minDate
+                });
+                //datepicker.attr("placeholder", moment(date).format('DD/MM/YYYY'));
+                datepicker.val(moment(date).format('DD/MM/YYYY'))
+            }
+        });
+
+        jQuery(function () {
+            var date = new Date();
+            date.setDate(date.getDate() + 1);
+            var minDate = new Date()
+            minDate.setDate(date.getDate() - 1);
+            var datepicker = $('#departureDate');
+
+            if (datepicker.length > 0) {
+                datepicker.datepicker({
+                    format: "dd/mm/yyyy",
+                    startDate: '+1d',
+                    autoclose: true,
+                    uiLibrary: 'bootstrap4',
+                    minDate: minDate
+                });
+                //datepicker.attr("placeholder", moment(date).format('DD/MM/YYYY'));
+                datepicker.val(moment(date).format('DD/MM/YYYY'))
+            }
+        });
+    </script>
+
+    <script>
+        function checkAvailability() {
+            if (checkDateOrder()) {
+                var theDiv = document.getElementById("roomsAvailable");
+                theDiv.innerHTML = "<h2>Choose available rooms:</h2>"
+                theDiv.innerHTML += "\n"
+                theDiv.innerHTML += "<button onclick=\"showClientData()\" class=\"btn btn-primary\" type='button'>Next</button> "; ""
+            } else {
+                alert("Wrong dates!")
+            }
+        }
+
+        function checkDateOrder() {
+            var arrivalInput = $("#arrivalDate").val();
+            var departureInput = $("#departureDate").val();
+
+            if (arrivalInput == "" || departureInput == "") {
+                return false
+            }
+
+            var arrivalDate = moment(arrivalInput, "DD/MM/YYYY");
+            arrivalDate = arrivalDate.toDate();
+            var departureDate = moment(departureInput, "DD/MM/YYYY");
+            departureDate = departureDate.toDate();
+            if (arrivalDate >= departureDate) {
+                return false
+            } else {
+                return true
+            }
+
+        }
+
+        function showClientData() {
+            var x = document.getElementById("clientData");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } //else {
+            //    x.style.display = "none";
+            //}
+        }
+
+        function submitFunction() {
+
+        }
+
+        function validateForm() {
+            
+        }
+    </script>
+
+
+</head>
+
+<body>
+    <form action="" onsubmit="validateForm()">
+        <fieldset>
+            <label for="arrivalDate">Arrival Date</label>
+            <input type="text" id="arrivalDate" class="datepicker" width="350px" name="arrivalDate">
+
+            <label for="departurelDate">Departure Date</label>
+            <input type="text" id="departureDate" class="datepicker" width="350px" name="departureDate">
+
+            <button onclick="checkAvailability()" class="btn btn-primary" type='button'>Check availability</button>
+
+            <div id="roomsAvailable"></div>
+            <div id="clientData" style="display: none; width: 350px;">
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="surname">Surname</label>
+                    <input type="text" class="form-control" id="surname" placeholder="Surname" name="surname">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="telephoneNumber">Telephone Number</label>
+                    <input type="text" class="form-control" id="telephoneNumber" placeholder="+48555555555" name="telephoneNumber">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="street">Street</label>
+                        <input type="text" class="form-control" id="street" placeholder="Street" name="street">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="number">Number</label>
+                        <input type="text" class="form-control" id="number" placeholder="Number" name="number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" class="form-control" id="country" placeholder="Country" name="country">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+            </div>
+        </fieldset>
+    </form>
+</body>
+
+</html>

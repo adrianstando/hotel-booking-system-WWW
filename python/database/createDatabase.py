@@ -46,8 +46,8 @@ def create_tables():
     CREATE TABLE IF NOT EXISTS ROOMS(
                 id integer PRIMARY KEY AUTOINCREMENT,
                 number integer NOT NULL,
-                roomType integer NOT NULL,
-                FOREIGN KEY(roomType) REFERENCES ROOM_TYPES(id)
+                roomTypeId integer NOT NULL,
+                FOREIGN KEY(roomTypeId) REFERENCES ROOM_TYPES(id)
                 );
     """
 
@@ -112,7 +112,7 @@ def insert_example_data():
     """
 
     sql2 = """
-    INSERT INTO ROOMS(number, roomType)
+    INSERT INTO ROOMS(number, roomTypeId)
     VALUES
         (101, 1),
         (102, 1),
@@ -134,8 +134,8 @@ def insert_example_data():
     sql4 = f"""
     INSERT INTO RESERVATIONS(roomID, arrivalDate, departureDate, clientID)
     VALUES
-        (1, '{today.strftime('%d/%m/%Y')}', '{today_plus_2_days.strftime('%d/%m/%Y')}', 1),
-        (3, '{tomorrow.strftime('%d/%m/%Y')}', '{tomorrow_plus_3_days.strftime('%d/%m/%Y')}', 2);
+        (1, '{today.strftime('%Y-%m-%d')}', '{today_plus_2_days.strftime('%Y-%m-%d')}', 1),
+        (3, '{tomorrow.strftime('%Y-%m-%d')}', '{tomorrow_plus_3_days.strftime('%Y-%m-%d')}', 2);
     """
 
     conn = None

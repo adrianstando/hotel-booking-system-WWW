@@ -29,3 +29,8 @@
 .footer p {
     color: #E1EF7E;
 }
+
+.footer img {
+    max-width: 200px;
+    width: 100%;
+}

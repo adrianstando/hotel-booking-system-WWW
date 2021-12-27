@@ -1,3 +1,3 @@
 $(document).ready(function() {
-    $("#header").load("./common/header.html")
+    $("#header_element").load("./common/header.html")
 })

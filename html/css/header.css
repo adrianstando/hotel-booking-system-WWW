@@ -1,6 +1,14 @@
 .header {
     width: 100%;
-    background-color: #027A9F;
+    background:
+  linear-gradient(
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.6)
+  ),
+  url('../items/beach.jpg');
+  background-repeat:no-repeat;
+  background-position: center center;
+  background-size: cover;
     overflow: auto;
     text-align: center;
 }

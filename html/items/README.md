@@ -1,0 +1,1 @@
+Photo of the beach source: [http://www.go2festival.com/properties/international-lido-di-jesolo-folk-dance-festival-2/](http://www.go2festival.com/properties/international-lido-di-jesolo-folk-dance-festival-2/)

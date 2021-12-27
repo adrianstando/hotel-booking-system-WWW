@@ -1,0 +1,42 @@
+.header {
+    width: 100%;
+    background-color: #027A9F;
+    overflow: auto;
+    text-align: center;
+}
+
+.header_navbar {
+    padding-bottom: 10px;
+}
+
+.header_navbar ul li {
+    display: inline-block;
+    padding: 15px;
+    font-size: 18px;
+}
+
+.header_logo {
+    padding: 30px 0px 10px;
+}
+
+.header li {
+    display: inline-block;
+    padding: 15px;
+    font-size: 18px;
+    color: white;
+}
+
+.header img {
+    max-width: 200px;
+    width: 100%;
+}
+
+.header a {
+    color: #E1EF7E;
+}
+
+.header a:hover {
+    text-decoration: underline;
+    color: #E1EF7E;
+    text-underline-position: under;
+} 

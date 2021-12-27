@@ -4,8 +4,6 @@ from .database.GetConnection import get_connection
 import pandas as pd
 import uvicorn
 
-import os
-
 app = FastAPI()
 api = FastAPI(openapi_prefix="/api")
 app.mount("/api", api)
@@ -17,8 +15,6 @@ def root():
     return {"message": "Hello World"}
 
 
-#@api.get("/available_rooms")
-#def available_rooms(available_rooms: AvailableRooms):
 @api.get("/available_rooms/{arrivalDate}/{departureDate}")
 def available_rooms(arrivalDate: str, departureDate: str):
     sql = """
@@ -47,16 +43,17 @@ def available_rooms(arrivalDate: str, departureDate: str):
     path_to_database = r"./database/database.db"
     conn = get_connection(path_to_database)
 
-    parameters = (departureDate, arrivalDate, arrivalDate, departureDate, arrivalDate, departureDate, arrivalDate, departureDate)
+    parameters = (
+    departureDate, arrivalDate, arrivalDate, departureDate, arrivalDate, departureDate, arrivalDate, departureDate)
 
     df = pd.read_sql(sql, conn, params=parameters)
     conn.close()
 
     return {
-        #"price": df.iloc[0, 1],
+        # "price": df.iloc[0, 1],
         "number": df.to_dict()['NUMBER'][0]
     }
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     uvicorn.run("main:app")

@@ -4,23 +4,12 @@
 
 .hotel-description p {
     text-align: center;
-    font-size: medium;
-}
-
-/* Medium devices and bigger (tablets, 768px and up) */
-@media (min-width: 768px) {  
-    .hotel-description p {
-        font-size: large;
-    }
-
-    .booking-row a {
-        font-size: large;
-    }
+    font-size: large;
 }
 
 .booking-row a {
     color: #E1EF7E;
-    font-size: medium;
+    font-size: large;
 }
 
 .booking-row a:hover {

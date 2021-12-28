@@ -7,3 +7,5 @@ Photo of a pizza source: [https://pixnio.com/pl/jedzenie-napoj/pizza/pizza-fast-
 Photo of a swimming pool source: [https://commons.wikimedia.org/wiki/File:Illuminated_swimming_pool_at_Masseria_Cimino_in_Puglia,\_Italy_-_panoramio.jpg](https://commons.wikimedia.org/wiki/File:Illuminated_swimming_pool_at_Masseria_Cimino_in_Puglia,_Italy_-_panoramio.jpg)
 
 Photo of a beach with sand source: [https://commons.wikimedia.org/wiki/File:Woman_at_La_Pelosa_beach,\_north_Sardinia\_\(Italy\)_\(23568985804\).jpg](https://commons.wikimedia.org/wiki/File:Woman_at_La_Pelosa_beach,_north_Sardinia_\(Italy\)_\(23568985804\).jpg)
+
+Photo of a hotel: [https://www.yourgolftravel.com/amare-marbella-beach-hotel](https://www.yourgolftravel.com/amare-marbella-beach-hotel)

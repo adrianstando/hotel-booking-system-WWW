@@ -26,8 +26,9 @@
     text-underline-position: under;
 } 
 
-.footer p {
+.txt {
     color: #E1EF7E;
+    text-align: center;
 }
 
 .footer img {

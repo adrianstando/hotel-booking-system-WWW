@@ -14,7 +14,8 @@
 }
 
 .header_navbar {
-    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 20px;
 }
 
 .header_navbar ul li {
@@ -24,7 +25,7 @@
 }
 
 .header_logo {
-    padding: 30px 0px 10px;
+    padding: 40px 0px 20px 0px;
 }
 
 .header li {

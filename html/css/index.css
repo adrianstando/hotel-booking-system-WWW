@@ -1,0 +1,36 @@
+.empty-row {
+    height: 20px;
+}
+
+.hotel-description p {
+    text-align: center;
+    font-size: medium;
+}
+
+/* Medium devices and bigger (tablets, 768px and up) */
+@media (min-width: 768px) {  
+    .hotel-description p {
+        font-size: large;
+    }
+
+    .booking-row a {
+        font-size: large;
+    }
+}
+
+.booking-row a {
+    color: #E1EF7E;
+    font-size: medium;
+}
+
+.booking-row a:hover {
+    text-decoration: underline;
+    color: #E1EF7E;
+    text-underline-position: under;
+} 
+
+.booking-row {
+    background-color: #6967A3;
+    padding: 15px;
+    margin: 20px 0;
+}

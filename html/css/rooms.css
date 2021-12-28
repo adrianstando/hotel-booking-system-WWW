@@ -1,0 +1,30 @@
+.empty-row {
+    height: 20px;
+}
+
+.room-name {
+    text-align: left;
+    font-size: x-large;
+}
+
+.room-description {
+    text-align: left;
+    font-size: small;
+}
+
+.booking-row a {
+    color: #E1EF7E;
+    font-size: large;
+}
+
+.booking-row a:hover {
+    text-decoration: underline;
+    color: #E1EF7E;
+    text-underline-position: under;
+} 
+
+.booking-row {
+    background-color: #6967A3;
+    padding: 15px;
+    margin: 20px 0;
+}

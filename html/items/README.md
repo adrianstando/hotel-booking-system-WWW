@@ -6,6 +6,10 @@ Photo of a pizza source: [https://pixnio.com/pl/jedzenie-napoj/pizza/pizza-fast-
 
 Photo of a swimming pool source: [https://commons.wikimedia.org/wiki/File:Illuminated_swimming_pool_at_Masseria_Cimino_in_Puglia,\_Italy_-_panoramio.jpg](https://commons.wikimedia.org/wiki/File:Illuminated_swimming_pool_at_Masseria_Cimino_in_Puglia,_Italy_-_panoramio.jpg)
 
-Photo of a beach with sand source: [https://commons.wikimedia.org/wiki/File:Woman_at_La_Pelosa_beach,\_north_Sardinia\_\(Italy\)_\(23568985804\).jpg](https://commons.wikimedia.org/wiki/File:Woman_at_La_Pelosa_beach,_north_Sardinia_\(Italy\)_\(23568985804\).jpg)
+Photo of a hotel source: [https://www.yourgolftravel.com/amare-marbella-beach-hotel](https://www.yourgolftravel.com/amare-marbella-beach-hotel)
 
-Photo of a hotel: [https://www.yourgolftravel.com/amare-marbella-beach-hotel](https://www.yourgolftravel.com/amare-marbella-beach-hotel)
+Photo of a single room source: [https://pixabay.com/photos/hotel-room-new-product-1330834/](https://pixabay.com/photos/hotel-room-new-product-1330834/)
+
+Photo of a double room source: [https://stocksnap.io/photo/bedroom-bed-XWI13131WH](https://stocksnap.io/photo/bedroom-bed-XWI13131WH)
+
+Photo of a family room source: [https://www.flickr.com/photos/kassandrabay/7745444772](https://www.flickr.com/photos/kassandrabay/7745444772)

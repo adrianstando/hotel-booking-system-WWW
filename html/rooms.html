@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <link rel="stylesheet" href="./css/header.css">
+    <script src="./js/load_header.js"></script>
+    <link rel="stylesheet" href="./css/footer.css">
+    <script src="./js/load_footer.js"></script>
+
+    <link rel="stylesheet" href="./css/rooms.css">
+
+
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header_element"></header>
+
+    <div class="container-fluid rooms">
+        <div class="col-xl-6 offset-xl-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1 col-xs-12">
+            <div class="row empty-row"></div>
+
+            <div class="container h-100">
+                <div class="row align-items-center h-100">
+                    <div class="col-lg-6 order-2 order-lg-1">
+                        <img src="./items/single_room.jpg" alt="" class="img-fluid" />
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2">
+                        <p class="room-name">Single room</p>
+                        <p class="room-description">
+                            One single bed, one bathroom with shower, W.C., courtesy kit with
+                            flip-flops, air conditioning, telephone, safe box, satellite TV, balcony with lateral sea
+                            view and free WI-FI. The daily rate includes: private beach service with one sun umbrella
+                            and two loungers per room, access to private pool and hotel gym, one parking space.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row empty-row"></div>
+
+            <div class="container h-100">
+                <div class="row align-items-center h-100">
+                    <div class="col-lg-6 order-2 order-lg-1">
+                        <img src="./items/double_room.jpeg" alt="" class="img-fluid" />
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2">
+                        <p class="room-name">Double room</p>
+                        <p class="room-description">
+                            One double bed or two single beds, one bathroom with shower, W.C., courtesy kit with
+                            flip-flops, air conditioning, telephone, safe box, satellite TV, balcony with lateral sea
+                            view and free WI-FI. The daily rate includes: private beach service with one sun umbrella
+                            and two loungers per room, access to private pool and hotel gym, one parking space.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row empty-row"></div>
+
+            <div class="container h-100">
+                <div class="row align-items-center h-100">
+                    <div class="col-lg-6 order-2 order-lg-1">
+                        <img src="./items/family_room.jpg" alt="" class="img-fluid" />
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2">
+                        <p class="room-name">Family room</p>
+                        <p class="room-description">
+                            Two double beds or double bed and two single beds, one bathroom with shower, W.C., courtesy kit with
+                            flip-flops, air conditioning, telephone, safe box, satellite TV, balcony with lateral sea
+                            view and free WI-FI. The daily rate includes: private beach service with one sun umbrella
+                            and two loungers per room, access to private pool and hotel gym, one parking space.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row booking-row justify-content-center">
+                <a href="../form.html">Book your holiday now!</a>
+            </div>
+            
+        </div>
+    </div>
+    <footer id="footer_element"></footer>
+</body>
+
+</html>

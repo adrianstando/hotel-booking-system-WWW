@@ -1,0 +1,2 @@
+#!/bin/sh
+python3 python/database/createDatabase.py './database/database.db'

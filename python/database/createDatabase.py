@@ -1,17 +1,17 @@
 import sqlite3
 from sqlite3 import Error
 import datetime
+import argparse
 
-path_to_file = r"../../database/database.db"
 
-
-def create_database():
+def create_database(path_to_file):
     f = open(path_to_file, 'w')
 
     conn = None
     try:
         conn = sqlite3.connect(path_to_file)
-        print(sqlite3.version)
+        print(f"SQLite version: {sqlite3.version}")
+        print("Database created!")
     except Error as e:
         print(e)
     finally:
@@ -27,7 +27,7 @@ def execute_sql(conn, sql):
         print(e)
 
 
-def create_tables():
+def create_tables(path_to_file):
     sql1a = """
     DROP TABLE IF EXISTS ROOM_TYPES;
     """
@@ -63,6 +63,7 @@ def create_tables():
                 telephoneNumber text NOT NULL,
                 street text NOT NULL,
                 number text NOT NULL,
+                city text NOT NULL,
                 country text NOT NULL
                 );
     """
@@ -105,25 +106,25 @@ def create_tables():
             conn.close()
 
 
-def insert_example_data():
+def create_insert_room_sql(n, room_id):
+    return f"""
+    INSERT INTO ROOMS(number, roomTypeId)
+    VALUES
+        ({n}, {room_id});
+    """
+
+
+def insert_example_data(path_to_file):
     sql1 = """
     INSERT INTO ROOM_TYPES(type, pricePerNight)
     VALUES('Double Room', 200);
     """
 
-    sql2 = """
-    INSERT INTO ROOMS(number, roomTypeId)
-    VALUES
-        (101, 1),
-        (102, 1),
-        (103, 1);
-    """
-
     sql3 = """
-    INSERT INTO CLIENTS(name, surname, email, telephoneNumber, street, number, country)
+    INSERT INTO CLIENTS(name, surname, email, telephoneNumber, street, number, city, country)
     VALUES
-        ('Jan', 'Kowalski', 'jan@jan.pl', '+48565454343', 'Nowa', '3A', 'Poland'),
-        ('Krzysztof', 'Góral', 'krzysztof@krzysztof.pl', '+48909878656', 'Cicha', '5', 'Poland');
+        ('Jan', 'Kowalski', 'jan@jan.pl', '+48565454343', 'Nowa', '3A', 'Warszawa', 'Poland'),
+        ('Krzysztof', 'Góral', 'krzysztof@krzysztof.pl', '+48909878656', 'Cicha', '5', 'Warszawa', 'Poland');
     """
 
     today = datetime.datetime.today()
@@ -143,7 +144,8 @@ def insert_example_data():
         conn = sqlite3.connect(path_to_file)
         if conn is not None:
             execute_sql(conn, sql1)
-            execute_sql(conn, sql2)
+            for i in range(10):
+                execute_sql(conn, create_insert_room_sql(str(100+i), 1))
             execute_sql(conn, sql3)
             execute_sql(conn, sql4)
             conn.commit()
@@ -158,6 +160,12 @@ def insert_example_data():
 
 
 if __name__ == "__main__":
-    create_database()
-    create_tables()
-    insert_example_data()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("output", help="Path of a database output file")
+    args = parser.parse_args()
+
+    path_to_file = args.output
+
+    create_database(path_to_file)
+    create_tables(path_to_file)
+    insert_example_data(path_to_file)

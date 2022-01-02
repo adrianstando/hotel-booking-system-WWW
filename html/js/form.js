@@ -201,7 +201,6 @@ function removeAvailableRooms() {
 }
 
 function validateForm() {
-    console.log($("#phoneNumber").intlTelInput("getNumber"));
     let arrivalDate = $("#arrivalDate").val();
     let departureDate = $("#departureDate").val();
 
@@ -251,7 +250,7 @@ function validateForm() {
     if(!isEmpty("#country") && !check("#country", regex_start_uppercase)) {
         return false;
     }
-    return false;
+    return true;
 }
 
 function validateFormAndAlert() {

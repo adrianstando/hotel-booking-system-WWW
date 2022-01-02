@@ -1,0 +1,24 @@
+.empty-row {
+    height: 20px;
+}
+
+.confirm-button, 
+.confirm-button:hover, 
+.confirm-button:active:focus {
+    background-color: #6967A3 !important;
+    border-color: #6967A3 !important;
+    color: white !important;
+}
+
+.datepicker a{
+    background: #6967A3;
+}
+
+.gj-picker-bootstrap table tr td.selected.gj-cursor-pointer div {
+    background-color: #6967A3;
+    border-color: #6967A3;
+}
+
+.gj-picker-bootstrap table tr td.today div {
+    color: #6967A3;
+}

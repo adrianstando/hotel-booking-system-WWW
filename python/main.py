@@ -28,10 +28,10 @@ def available_rooms(arrivalDate: str, departureDate: str):
         LEFT JOIN (
             SELECT * FROM RESERVATIONS 
             WHERE
-            (date(RESERVATIONS.arrivalDate) > date(?) AND 
+            (date(RESERVATIONS.arrivalDate) >= date(?) AND 
              date(RESERVATIONS.arrivalDate) < date(?)) OR
             (date(RESERVATIONS.departureDate) > date(?) AND 
-             date(RESERVATIONS.departureDate) < date(?)) OR
+             date(RESERVATIONS.departureDate) <= date(?)) OR
             (date(RESERVATIONS.arrivalDate) < date(?) AND 
              date(RESERVATIONS.departureDate) > date(?)) 
         ) AS r on ROOMS.id = r.roomId

@@ -6,7 +6,8 @@ jQuery(function () {
     var datepicker = $('#arrivalDate');
     if (datepicker.length > 0) {
         datepicker.datepicker({
-            format: "dd/mm/yyyy",
+            //format: "dd/mm/yyyy",
+            format: "yyyy-mm-dd",
             startDate: '+1d',
             autoclose: true,
             uiLibrary: 'bootstrap4',
@@ -15,7 +16,8 @@ jQuery(function () {
             hideClientData();
             removeAvailableRooms();
         });
-        datepicker.val(moment(date).format('DD/MM/YYYY'))
+        //datepicker.val(moment(date).format('DD/MM/YYYY'))
+        datepicker.val(moment(date).format('YYYY-MM-DD'))
     }
 });
 
@@ -28,7 +30,8 @@ jQuery(function () {
 
     if (datepicker.length > 0) {
         datepicker.datepicker({
-            format: "dd/mm/yyyy",
+            //format: "dd/mm/yyyy",
+            format: "yyyy-mm-dd",
             startDate: '+1d',
             autoclose: true,
             uiLibrary: 'bootstrap4',
@@ -37,7 +40,8 @@ jQuery(function () {
             hideClientData();
             removeAvailableRooms();
         });
-        datepicker.val(moment(date).format('DD/MM/YYYY'))
+        //datepicker.val(moment(date).format('DD/MM/YYYY'))
+        datepicker.val(moment(date).format('YYYY-MM-DD'))
     }
 });
 
@@ -55,18 +59,28 @@ function getAvailableRooms() {
     let arrivalInput = $("#arrivalDate").val();
     let departureInput = $("#departureDate").val();
 
-    var arrivalDate = moment(arrivalInput, "DD/MM/YYYY");
+    /*var arrivalDate = moment(arrivalInput, "DD/MM/YYYY");
     arrivalDate = arrivalDate.toDate();
     arrivalDate = moment(arrivalDate).format('YYYY-MM-DD')
     var departureDate = moment(departureInput, "DD/MM/YYYY");
     departureDate = departureDate.toDate();
-    departureDate = moment(departureDate).format('YYYY-MM-DD')
+    departureDate = moment(departureDate).format('YYYY-MM-DD')*/
+
+    var arrivalDate = arrivalInput
+    var departureDate = departureInput
+    
 
     let url = "/api/available_rooms/" + arrivalDate + "/" + departureDate
     var answear
 
     try {
-        let res = fetch(url).then((response) => { return response.json() }).then((data) => {
+        let res = fetch(url).then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Something went wrong');
+            }
+        }).then((data) => {
             //console.log(data)
             var theDiv = document.getElementById("roomsAvailable");
             theDiv.innerHTML = "";
@@ -131,11 +145,15 @@ function getAvailableRooms() {
             var empty_row = document.createElement("div");
             empty_row.classList.add('empty-row');
             theDiv.appendChild(empty_row);
-        })
-
-
+        }).catch((error) => {
+            console.log(error)
+            var theDiv = document.getElementById("roomsAvailable");
+            theDiv.innerHTML = error.toString();
+        });
     } catch (error) {
         console.log(error);
+        var theDiv = document.getElementById("roomsAvailable");
+        theDiv.innerHTML = error.toString();
     }
 }
 
@@ -147,13 +165,13 @@ function checkDateOrder() {
         return false
     }
 
-    if(!validateDates()){
+    if (!validateDates()) {
         return false;
     }
 
-    var arrivalDate = moment(arrivalInput, "DD/MM/YYYY");
+    var arrivalDate = moment(arrivalInput, 'YYYY-MM-DD');
     arrivalDate = arrivalDate.toDate();
-    var departureDate = moment(departureInput, "DD/MM/YYYY");
+    var departureDate = moment(departureInput, 'YYYY-MM-DD');
     departureDate = departureDate.toDate();
     if (arrivalDate >= departureDate) {
         return false
@@ -166,12 +184,12 @@ function validateDates() {
     var arrivalInput = $("#arrivalDate").val();
     var departureInput = $("#departureDate").val();
 
-    if(!moment(arrivalInput, "DD/MM/YYYY").isValid()){
-        console.log(moment(arrivalInput, "DD/MM/YYYY").isValid())
+    if (!moment(arrivalInput, 'YYYY-MM-DD').isValid()) {
+        //console.log(moment(arrivalInput, "DD/MM/YYYY").isValid())
         return false;
     }
 
-    if(!moment(departureInput, "DD/MM/YYYY").isValid()){
+    if (!moment(departureInput, 'YYYY-MM-DD').isValid()) {
         return false;
     }
 
@@ -204,15 +222,15 @@ function validateForm() {
     let arrivalDate = $("#arrivalDate").val();
     let departureDate = $("#departureDate").val();
 
-    if(arrivalDate == "" || departureDate == "") {
+    if (arrivalDate == "" || departureDate == "") {
         return false;
     }
 
-    if(!validateDates()){
+    if (!validateDates()) {
         return false;
     }
 
-    if($("#numberOfRooms").val() == "0") {
+    if ($("#numberOfRooms").val() == "0") {
         return false;
     }
 
@@ -226,30 +244,31 @@ function validateForm() {
     }
 
     var regex_email = /\S+@\S+\.\S+/;
-    if(isEmpty("#email") && !check("#email", regex_email)) {
+    if (isEmpty("#email") && !check("#email", regex_email)) {
         return false;
     }
     var regex_phone = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-    if(!isEmpty("#phoneNumber") && !check("#phoneNumber", regex_phone)) {
+    if (!isEmpty("#phoneNumber") && !check("#phoneNumber", regex_phone)) {
+        return false;
+    }
+
+    var regex_start_uppercase = /^[A-Z]/;
+    if (!isEmpty("#name") && !check("#name", regex_start_uppercase)) {
+        return false;
+    }
+    if (!isEmpty("#surname") && !check("#surname", regex_start_uppercase)) {
+        return false;
+    }
+    if (!isEmpty("#street") && !check("#street", regex_start_uppercase)) {
+        return false;
+    }
+    if (!isEmpty("#city") && !check("#city", regex_start_uppercase)) {
+        return false;
+    }
+    if (!isEmpty("#country") && !check("#country", regex_start_uppercase)) {
         return false;
     }
     
-    var regex_start_uppercase = /^[A-Z]/;
-    if(!isEmpty("#name") && !check("#name", regex_start_uppercase)) {
-        return false;
-    }
-    if(!isEmpty("#surname") && !check("#surname", regex_start_uppercase)) {
-        return false;
-    }
-    if(!isEmpty("#street") && !check("#street", regex_start_uppercase)) {
-        return false;
-    }
-    if(!isEmpty("#city") && !check("#city", regex_start_uppercase)) {
-        return false;
-    }
-    if(!isEmpty("#country") && !check("#country", regex_start_uppercase)) {
-        return false;
-    }
     return true;
 }
 

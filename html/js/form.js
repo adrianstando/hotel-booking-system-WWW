@@ -220,7 +220,7 @@ function validateDates() {
 }
 
 function showClientData() {
-    if ($("#numberOfRooms").val() == 0) {
+    if ($("#numberOfSingleRooms").val() == 0 && $("#numberOfDoubleRooms").val() == 0 && $("#numberOfFamilyRooms").val() == 0) {
         alert("Choose rooms!")
     } else {
         var x = document.getElementById("clientData");
@@ -252,7 +252,7 @@ function validateForm() {
         return false;
     }
 
-    if ($("#numberOfRooms").val() == "0") {
+    if ($("#numberOfSingleRooms").val() == 0 && $("#numberOfDoubleRooms").val() == 0 && $("#numberOfFamilyRooms").val() == 0) {
         return false;
     }
 

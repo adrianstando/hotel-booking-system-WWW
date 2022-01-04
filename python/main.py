@@ -23,26 +23,28 @@ async def root():
 @api.get("/available_rooms/{arrivalDate}/{departureDate}")
 async def available_rooms(arrivalDate: str, departureDate: str):
     sql = """
-    SELECT 
-        ROOM_TYPES.type AS TYPE, 
-        CAST(JULIANDAY(?) - JULIANDAY(?) AS INTEGER) * ROOM_TYPES.pricePerNight AS PRICE,
-        COUNT(*) AS NUMBER
+    SELECT
+        ROOM_TYPES.type AS TYPE,
+        SUM(CASE WHEN number IS NULL THEN 0 ELSE 1 END) AS NUMBER,
+        CAST(JULIANDAY(?) - JULIANDAY(?) AS INTEGER) * ROOM_TYPES.pricePerNight AS PRICE
     FROM
         ROOM_TYPES
-        JOIN ROOMS ON ROOM_TYPES.id = ROOMS.roomTypeId
         LEFT JOIN (
-            SELECT * FROM RESERVATIONS 
+            SELECT * FROM ROOMS
+            LEFT JOIN (
+                SELECT * FROM RESERVATIONS
+                WHERE
+                (date(RESERVATIONS.arrivalDate) >= date(?) AND
+                 date(RESERVATIONS.arrivalDate) < date(?)) OR
+                (date(RESERVATIONS.departureDate) > date(?) AND
+                 date(RESERVATIONS.departureDate) <= date(?)) OR
+                (date(RESERVATIONS.arrivalDate) < date(?) AND
+                 date(RESERVATIONS.departureDate) > date(?))
+            ) AS r on ROOMS.id = r.roomId
             WHERE
-            (date(RESERVATIONS.arrivalDate) >= date(?) AND 
-             date(RESERVATIONS.arrivalDate) < date(?)) OR
-            (date(RESERVATIONS.departureDate) > date(?) AND 
-             date(RESERVATIONS.departureDate) <= date(?)) OR
-            (date(RESERVATIONS.arrivalDate) < date(?) AND 
-             date(RESERVATIONS.departureDate) > date(?)) 
-        ) AS r on ROOMS.id = r.roomId
-    WHERE
-        r.arrivalDate IS NULL
-    GROUP BY ROOM_TYPES.type;    
+                r.arrivalDate IS NULL
+        ) AS r1 ON ROOM_TYPES.id = r1.roomTypeId
+    GROUP BY ROOM_TYPES.type;
     """
 
     # validate date format
@@ -50,8 +52,7 @@ async def available_rooms(arrivalDate: str, departureDate: str):
     validate_date_format(departureDate)
 
     try:
-        path_to_database = r"./database/database.db"
-        conn = get_connection(path_to_database)
+        conn = get_connection()
     except Exception as e:
         raise HTTPException(404, e)
 
@@ -61,11 +62,15 @@ async def available_rooms(arrivalDate: str, departureDate: str):
     )
 
     df = pd.read_sql(sql, conn, params=parameters)
+    df = df.set_index('TYPE')
+    df = df.fillna(0)
     conn.close()
 
     return {
         # "price": df.iloc[0, 1],
-        "number": df.to_dict()['NUMBER'][0]
+        "numberOfSingleRooms": int(df.loc['Single Room']['NUMBER']),
+        "numberOfDoubleRooms": int(df.loc['Double Room']['NUMBER']),
+        "numberOfFamilyRooms": int(df.loc['Family Room']['NUMBER'])
     }
 
 
@@ -73,7 +78,9 @@ async def available_rooms(arrivalDate: str, departureDate: str):
 class Reservation(BaseModel):
     arrivalDate: str
     departureDate: str
-    numberOfRooms: int
+    numberOfSingleRooms: int
+    numberOfDoubleRooms: int
+    numberOfFamilyRooms: int
     name: str
     surname: str
     email: str
@@ -92,8 +99,7 @@ async def new_reservation(reservation: Reservation = Depends(Reservation.as_form
 
     try:
         # database connection
-        path_to_database = r"./database/database.db"
-        conn = get_connection(path_to_database, isolation_level='EXCLUSIVE')
+        conn = get_connection(isolation_level='EXCLUSIVE')
     except Exception as e:
         return PlainTextResponse(str(e), status_code=400)
 
@@ -101,34 +107,41 @@ async def new_reservation(reservation: Reservation = Depends(Reservation.as_form
         c = conn.cursor()
         # check number of available rooms
         sql_available_rooms = """
-        SELECT 
+        SELECT
             ROOM_TYPES.type AS TYPE,
-            COUNT(*) AS NUMBER
+            SUM(CASE WHEN number IS NULL THEN 0 ELSE 1 END) AS NUMBER
         FROM
             ROOM_TYPES
-            JOIN ROOMS ON ROOM_TYPES.id = ROOMS.roomTypeId
             LEFT JOIN (
-                SELECT * FROM RESERVATIONS 
+                SELECT * FROM ROOMS
+                LEFT JOIN (
+                    SELECT * FROM RESERVATIONS
+                    WHERE
+                    (date(RESERVATIONS.arrivalDate) >= date(?) AND
+                     date(RESERVATIONS.arrivalDate) < date(?)) OR
+                    (date(RESERVATIONS.departureDate) > date(?) AND
+                     date(RESERVATIONS.departureDate) <= date(?)) OR
+                    (date(RESERVATIONS.arrivalDate) < date(?) AND
+                     date(RESERVATIONS.departureDate) > date(?))
+                ) AS r on ROOMS.id = r.roomId
                 WHERE
-                (date(RESERVATIONS.arrivalDate) >= date(?) AND 
-                 date(RESERVATIONS.arrivalDate) < date(?)) OR
-                (date(RESERVATIONS.departureDate) > date(?) AND 
-                 date(RESERVATIONS.departureDate) <= date(?)) OR
-                (date(RESERVATIONS.arrivalDate) < date(?) AND 
-                 date(RESERVATIONS.departureDate) > date(?)) 
-            ) AS r on ROOMS.id = r.roomId
-        WHERE
-            r.arrivalDate IS NULL
-        GROUP BY ROOM_TYPES.type;    
+                    r.arrivalDate IS NULL
+            ) AS r1 ON ROOM_TYPES.id = r1.roomTypeId
+        GROUP BY ROOM_TYPES.type;
         """
         parameters = (
             reservation.arrivalDate, reservation.departureDate, reservation.arrivalDate,
             reservation.departureDate, reservation.arrivalDate, reservation.departureDate
         )
 
-        n = int(pd.read_sql(sql_available_rooms, conn, params=parameters).to_dict()['NUMBER'][0])
+        df = pd.read_sql(sql_available_rooms, conn, params=parameters)
+        df = df.set_index('TYPE')
+        df = df.fillna(0)
+        df = df.to_dict()['NUMBER']
 
-        if reservation.numberOfRooms > n:
+        if reservation.numberOfSingleRooms > df["Single Room"] or \
+                reservation.numberOfDoubleRooms > df["Double Room"] or \
+                reservation.numberOfFamilyRooms > df["Family Room"]:
             raise HTTPException(status_code=422, detail="Wrong data")
 
         # client personal data
@@ -170,15 +183,32 @@ async def new_reservation(reservation: Reservation = Depends(Reservation.as_form
                 (date(RESERVATIONS.arrivalDate) < date(?) AND 
                  date(RESERVATIONS.departureDate) > date(?)) 
             ) AS r on ROOMS.id = r.roomId
-        WHERE r.arrivalDate IS NULL AND ROOM_TYPES.type = 'Double Room'
+        WHERE r.arrivalDate IS NULL AND ROOM_TYPES.type = (?)
         LIMIT (?)
         """
+
+        room_ids = []
+        # single room
         parameters = (
             reservation.arrivalDate, reservation.departureDate, reservation.arrivalDate,
             reservation.departureDate, reservation.arrivalDate, reservation.departureDate,
-            reservation.numberOfRooms
+            'Single Room', reservation.numberOfSingleRooms
         )
-        room_ids = pd.read_sql(sql_room_ids, conn, params=parameters)['id'].to_list()
+        room_ids = room_ids + pd.read_sql(sql_room_ids, conn, params=parameters)['id'].to_list()
+        # double room
+        parameters = (
+            reservation.arrivalDate, reservation.departureDate, reservation.arrivalDate,
+            reservation.departureDate, reservation.arrivalDate, reservation.departureDate,
+            'Double Room', reservation.numberOfDoubleRooms
+        )
+        room_ids = room_ids + pd.read_sql(sql_room_ids, conn, params=parameters)['id'].to_list()
+        # family room
+        parameters = (
+            reservation.arrivalDate, reservation.departureDate, reservation.arrivalDate,
+            reservation.departureDate, reservation.arrivalDate, reservation.departureDate,
+            'Family Room', reservation.numberOfFamilyRooms
+        )
+        room_ids = room_ids + pd.read_sql(sql_room_ids, conn, params=parameters)['id'].to_list()
 
         # insert new reservations
         sql_insert_reservation = """

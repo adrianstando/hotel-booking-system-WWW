@@ -3,10 +3,10 @@ from sqlite3 import Error
 import os.path
 
 
-# path_to_file = r"../../database/database.db"
+def get_connection(isolation_level=None):
+    # this path must be valid for main.py
+    path_to_file = r"./database/database.db"
 
-
-def get_connection(path_to_file, isolation_level=None):
     conn = None
     try:
         if not os.path.exists(path_to_file):

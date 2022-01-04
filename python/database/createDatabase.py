@@ -117,7 +117,10 @@ def create_insert_room_sql(n, room_id):
 def insert_example_data(path_to_file):
     sql1 = """
     INSERT INTO ROOM_TYPES(type, pricePerNight)
-    VALUES('Double Room', 200);
+    VALUES
+        ('Single Room', 1500),
+        ('Double Room', 200),
+        ('Family Room', 380);
     """
 
     sql3 = """
@@ -136,7 +139,10 @@ def insert_example_data(path_to_file):
     INSERT INTO RESERVATIONS(roomID, arrivalDate, departureDate, clientID)
     VALUES
         (1, '{today.strftime('%Y-%m-%d')}', '{today_plus_2_days.strftime('%Y-%m-%d')}', 1),
-        (3, '{tomorrow.strftime('%Y-%m-%d')}', '{tomorrow_plus_3_days.strftime('%Y-%m-%d')}', 2);
+        (3, '{tomorrow.strftime('%Y-%m-%d')}', '{tomorrow_plus_3_days.strftime('%Y-%m-%d')}', 2),
+        (7, '{today.strftime('%Y-%m-%d')}', '{today_plus_2_days.strftime('%Y-%m-%d')}', 1),
+        (8, '{tomorrow.strftime('%Y-%m-%d')}', '{tomorrow_plus_3_days.strftime('%Y-%m-%d')}', 2),
+        (17, '{tomorrow.strftime('%Y-%m-%d')}', '{tomorrow_plus_3_days.strftime('%Y-%m-%d')}', 2);
     """
 
     conn = None
@@ -144,8 +150,15 @@ def insert_example_data(path_to_file):
         conn = sqlite3.connect(path_to_file)
         if conn is not None:
             execute_sql(conn, sql1)
-            for i in range(10):
+
+            # insert rooms
+            for i in range(5):
                 execute_sql(conn, create_insert_room_sql(str(100+i), 1))
+            for i in range(10):
+                execute_sql(conn, create_insert_room_sql(str(200+i), 2))
+            for i in range(2):
+                execute_sql(conn, create_insert_room_sql(str(300+i), 3))
+
             execute_sql(conn, sql3)
             execute_sql(conn, sql4)
             conn.commit()

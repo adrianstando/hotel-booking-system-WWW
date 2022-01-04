@@ -68,7 +68,7 @@ function getAvailableRooms() {
 
     var arrivalDate = arrivalInput
     var departureDate = departureInput
-    
+
 
     let url = "/api/available_rooms/" + arrivalDate + "/" + departureDate
     var answear
@@ -84,7 +84,10 @@ function getAvailableRooms() {
             //console.log(data)
             var theDiv = document.getElementById("roomsAvailable");
             theDiv.innerHTML = "";
-            answer = data.number
+
+            var numberOfSingleRooms = data.numberOfSingleRooms;
+            var numberOfDoubleRooms = data.numberOfDoubleRooms;
+            var numberOfFamilyRooms = data.numberOfFamilyRooms;
 
             // b
             var b_element = document.createElement("b");
@@ -97,35 +100,15 @@ function getAvailableRooms() {
             var break_line = document.createElement("br");
             theDiv.appendChild(break_line);
 
-            // info
-            var row = document.createElement("div");
-            row.classList.add('form-group');
-            row.classList.add('row');
+            // empty row
+            var empty_row = document.createElement("div");
+            empty_row.classList.add('empty-row');
+            theDiv.appendChild(empty_row);
 
-            var label = document.createElement("label");
-            label.classList.add('col-sm-4');
-            label.classList.add("col-form-label");
-            label.htmlFor = 'numberOfRooms'
-            label.appendChild(
-                document.createTextNode('Double Room: ')
-            )
-            var double_room = document.createElement("select");
-            double_room.classList.add('form-control');
-            double_room.classList.add('col-sm-3');
-            double_room.setAttribute('name', 'numberOfRooms')
-            double_room.id = 'numberOfRooms';
-            for (let i = 0; i <= answer.toString(); i++) {
-                var opt = document.createElement('option');
-                opt.value = i.toString();
-                opt.innerHTML = i.toString();
-                double_room.appendChild(opt);
-            }
-            double_room.onchange = function () {
-                hideClientData()
-            }
-            row.appendChild(label);
-            row.appendChild(double_room);
-            theDiv.appendChild(row);
+            // info
+            theDiv.appendChild(addRoom("Single Room: ", 'numberOfSingleRooms', numberOfSingleRooms));
+            theDiv.appendChild(addRoom("Double Room: ", 'numberOfDoubleRooms', numberOfDoubleRooms));
+            theDiv.appendChild(addRoom("Family Room: ", 'numberOfFamilyRooms', numberOfFamilyRooms));
 
             // button
             var button = document.createElement("button");
@@ -155,6 +138,45 @@ function getAvailableRooms() {
         var theDiv = document.getElementById("roomsAvailable");
         theDiv.innerHTML = error.toString();
     }
+}
+
+function addRoom(name_to_display, name_for_form, n) {
+    var row = document.createElement("div");
+    row.classList.add('form-group');
+    row.classList.add('row');
+
+    var label = document.createElement("label");
+    label.classList.add('col-sm-4');
+    label.classList.add("col-form-label");
+    label.htmlFor = name_for_form;
+    label.appendChild(
+        document.createTextNode(name_to_display)
+    )
+    var double_room = document.createElement("select");
+    double_room.classList.add('form-control');
+    double_room.classList.add('col-sm-3');
+    double_room.setAttribute('name', name_for_form);
+    double_room.id = name_for_form;
+    for (let i = 0; i <= n; i++) {
+        var opt = document.createElement('option');
+        opt.value = i.toString();
+        opt.innerHTML = i.toString();
+        double_room.appendChild(opt);
+    }
+    double_room.onchange = function () {
+        hideClientData()
+    }
+
+    if(n==0) {
+        double_room.disabled = true;
+        double_room.setAttribute('selected', true);
+        double_room.value = 0;
+    }
+
+    row.appendChild(label);
+    row.appendChild(double_room);
+
+    return row;
 }
 
 function checkDateOrder() {
@@ -268,7 +290,9 @@ function validateForm() {
     if (!isEmpty("#country") && !check("#country", regex_start_uppercase)) {
         return false;
     }
-    
+
+    un_disable_select_fields()
+
     return true;
 }
 
@@ -279,4 +303,10 @@ function validateFormAndAlert() {
         alert("Check form!")
         return false;
     }
+}
+
+function un_disable_select_fields() {
+    $('select:disabled').each(function(e) {
+        $(this).removeAttr('disabled');
+    })
 }

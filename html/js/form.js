@@ -1,4 +1,5 @@
 jQuery(function () {
+    // this script creates arrivalDate date picker
     var date = new Date();
     var minDate = new Date()
     minDate.setDate(date.getDate() - 1);
@@ -22,6 +23,7 @@ jQuery(function () {
 });
 
 jQuery(function () {
+    // this script creates departurelDate date picker
     var date = new Date();
     date.setDate(date.getDate() + 1);
     var minDate = new Date()
@@ -45,6 +47,7 @@ jQuery(function () {
     }
 });
 
+// this script sets js functions to html elements
 window.onload = function() {
     document.getElementById('form').onsubmit = function() {
         return validateFormAndAlert()
@@ -58,6 +61,7 @@ window.onload = function() {
 // -----------------------------------------------------------------------------
 
 function checkAvailability() {
+    // this function is connected with 'Check Availability' button
     if (checkDateOrder()) {
         getAvailableRooms()
     } else {
@@ -66,6 +70,10 @@ function checkAvailability() {
 }
 
 function getAvailableRooms() {
+    // this function connects to API 
+    // and processes available rooms data 
+    // and creates html elements in form
+
     let arrivalInput = $("#arrivalDate").val();
     let departureInput = $("#departureDate").val();
 
@@ -90,7 +98,6 @@ function getAvailableRooms() {
                 throw new Error('Something went wrong');
             }
         }).then((data) => {
-            //console.log(data)
             var theDiv = document.getElementById("roomsAvailable");
             theDiv.innerHTML = "";
 
@@ -132,7 +139,6 @@ function getAvailableRooms() {
             // div with total price
             var div_total = document.createElement("div");
             div_total.classList.add("col-sm-4");
-            //div_total.classList.add("offset-sm-8");
             div_total.classList.add("col-form-label");
             // b with total price
             var b_total = document.createElement("b");
@@ -143,7 +149,6 @@ function getAvailableRooms() {
             var div_value = document.createElement("div");
             div_value.classList.add("col-sm-4");
             div_value.classList.add("col-form-label");
-            //div_value.innerHTML = " 0 €"
             var value = document.createElement("span");
             value.id = "total_value";
             value.innerHTML = "0";
@@ -205,6 +210,7 @@ function getAvailableRooms() {
 }
 
 function update_total_value_factory(singleRoomPrice, doubleRoomPrice, familyRoomPrice) {
+    // this function returns function that will update total price based on dates, chosen rooms and room prices
     return function() {
         var elem = document.getElementById("total_value");
 
@@ -221,6 +227,8 @@ function update_total_value_factory(singleRoomPrice, doubleRoomPrice, familyRoom
 }
 
 function addRoom(name_to_display, name_for_form, n, price, update_function) {
+    // this function returns an element that describes one room type data in form
+    // update function - function that will update total price and will be invoked when selected values changes
     var row = document.createElement("div");
     row.classList.add('form-group');
     row.classList.add('row');
@@ -281,6 +289,7 @@ function addRoom(name_to_display, name_for_form, n, price, update_function) {
 }
 
 function checkDateOrder() {
+    // this function checks whether arrival date and departure date are valid and in the correct order
     var arrivalInput = $("#arrivalDate").val();
     var departureInput = $("#departureDate").val();
 
@@ -304,6 +313,7 @@ function checkDateOrder() {
 }
 
 function validateDates() {
+    // this function validates date format
     var arrivalInput = $("#arrivalDate").val();
     var departureInput = $("#departureDate").val();
 
@@ -321,6 +331,7 @@ function validateDates() {
 }
 
 function showClientData() {
+    // this function will show client personal data form
     if ($("#numberOfSingleRooms").val() == 0 && $("#numberOfDoubleRooms").val() == 0 && $("#numberOfFamilyRooms").val() == 0) {
         alert("Choose rooms!")
     } else {
@@ -332,16 +343,19 @@ function showClientData() {
 }
 
 function hideClientData() {
+    // this function will hide client personal data form
     var x = document.getElementById("clientData");
     x.style.display = "none";
 }
 
 function removeAvailableRooms() {
+    // this function will hide (remove) data about available rooms
     var theDiv = document.getElementById("roomsAvailable");
     theDiv.innerHTML = ""
 }
 
 function validateForm() {
+    // this function validates a form
     let arrivalDate = $("#arrivalDate").val();
     let departureDate = $("#departureDate").val();
 
@@ -398,6 +412,7 @@ function validateForm() {
 }
 
 function validateFormAndAlert() {
+    // this function validates a form and shows alert if it is not valid
     if (validateForm()) {
         return true;
     } else {
@@ -407,6 +422,9 @@ function validateFormAndAlert() {
 }
 
 function un_disable_select_fields() {
+    // this function enables all disabled selects;
+    // it is nedded when number of available rooms of certain type is 0
+    // and this information must still be submitted
     $('select:disabled').each(function(e) {
         $(this).removeAttr('disabled');
     })

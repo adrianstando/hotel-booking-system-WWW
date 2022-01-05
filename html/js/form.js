@@ -13,8 +13,8 @@ jQuery(function () {
     var datepicker = $('#arrivalDate');
     if (datepicker.length > 0) {
         datepicker.datepicker({
-            //format: "dd/mm/yyyy",
-            format: "yyyy-mm-dd",
+            format: "dd/mm/yyyy",
+            //format: "yyyy-mm-dd",
             startDate: '+1d',
             autoclose: true,
             uiLibrary: 'bootstrap4',
@@ -22,22 +22,22 @@ jQuery(function () {
         }).on("change", function (e) {
             let arrivalInput = $("#arrivalDate").val();
             let departureInput = $("#departureDate").val();
-            var arrivalDate = moment(arrivalInput, "YYYY-MM-DD").toDate()
-            var departureDate = moment(departureInput, "YYYY-MM-DD").toDate()
+            var arrivalDate = moment(arrivalInput, 'DD/MM/YYYY').toDate()
+            var departureDate = moment(departureInput, 'DD/MM/YYYY').toDate()
 
             if((lastArrivalValue - arrivalDate) != 0){
                 hideClientData();
                 removeAvailableRooms();
                 if(departureDate <= arrivalDate) {
-                    var newDep = moment(arrivalInput, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+                    var newDep = moment(arrivalInput, 'DD/MM/YYYY').add(1, 'days').format('DD/MM/YYYY');
                     $("#departureDate").val(newDep);
-                    lastDepartureValue = moment(arrivalInput, "YYYY-MM-DD").add(1, 'days').toDate()
+                    lastDepartureValue = moment(arrivalInput, 'DD/MM/YYYY').add(1, 'days').toDate()
                 }
                 lastArrivalValue = arrivalDate;
               }
         });
-        //datepicker.val(moment(date).format('DD/MM/YYYY'))
-        datepicker.val(moment(date).format('YYYY-MM-DD'))
+        datepicker.val(moment(date).format('DD/MM/YYYY'))
+        //datepicker.val(moment(date).format('YYYY-MM-DD'))
     }
 });
 
@@ -51,15 +51,15 @@ jQuery(function () {
 
     if (datepicker.length > 0) {
         datepicker.datepicker({
-            //format: "dd/mm/yyyy",
-            format: "yyyy-mm-dd",
+            format: "dd/mm/yyyy",
+            //format: "yyyy-mm-dd",
             startDate: '+1d',
             autoclose: true,
             uiLibrary: 'bootstrap4',
             minDate: minDate,
             disableDates:  function (date) {
                 let arrivalInput = $("#arrivalDate").val();
-                var arrivalDatePlus1 = moment(arrivalInput, "YYYY-MM-DD").add(1, 'days').toDate()
+                var arrivalDatePlus1 = moment(arrivalInput, 'DD/MM/YYYY').add(1, 'days').toDate()
                 if (date < arrivalDatePlus1) {
                     return false;
                 } else {
@@ -69,8 +69,8 @@ jQuery(function () {
         }).on("change", function (e) {
             let arrivalInput = $("#arrivalDate").val();
             let departureInput = $("#departureDate").val();
-            var arrivalDate = moment(arrivalInput, "YYYY-MM-DD").toDate()
-            var departureDate = moment(departureInput, "YYYY-MM-DD").toDate()
+            var arrivalDate = moment(arrivalInput, 'DD/MM/YYYY').toDate()
+            var departureDate = moment(departureInput, 'DD/MM/YYYY').toDate()
 
             if((lastDepartureValue - departureDate) != 0){
                 hideClientData();
@@ -78,8 +78,8 @@ jQuery(function () {
                 lastDepartureValue = departureDate;
               }
         });
-        //datepicker.val(moment(date).format('DD/MM/YYYY'))
-        datepicker.val(moment(date).format('YYYY-MM-DD'))
+        datepicker.val(moment(date).format('DD/MM/YYYY'))
+        //datepicker.val(moment(date).format('YYYY-MM-DD'))
     }
 });
 
@@ -120,8 +120,8 @@ function getAvailableRooms() {
     departureDate = departureDate.toDate();
     departureDate = moment(departureDate).format('YYYY-MM-DD')*/
 
-    var arrivalDate = arrivalInput
-    var departureDate = departureInput
+    var arrivalDate = changeDateFormatFromDisplayToSend(arrivalInput) //arrivalInput
+    var departureDate = changeDateFormatFromDisplayToSend(departureInput) //departureInput
 
 
     let url = "/api/available_rooms/" + arrivalDate + "/" + departureDate
@@ -254,8 +254,8 @@ function update_total_value_factory(singleRoomPrice, doubleRoomPrice, familyRoom
         let n_double = $('#numberOfDoubleRooms').val()
         let n_family = $('#numberOfFamilyRooms').val();
 
-        let arrivalInput = moment($("#arrivalDate").val(), "YYYY-MM-DD");
-        let departureInput = moment($("#departureDate").val(), "YYYY-MM-DD");
+        let arrivalInput = moment($("#arrivalDate").val(), "DD/MM/YYYY");
+        let departureInput = moment($("#departureDate").val(), "DD/MM/YYYY");
 
         var val = (singleRoomPrice * n_single + doubleRoomPrice * n_double + familyRoomPrice * n_family) * departureInput.diff(arrivalInput, 'days');
         elem.innerHTML = val.toString();
@@ -337,9 +337,9 @@ function checkDateOrder() {
         return false;
     }
 
-    var arrivalDate = moment(arrivalInput, 'YYYY-MM-DD');
+    var arrivalDate = moment(arrivalInput, "DD/MM/YYYY");
     arrivalDate = arrivalDate.toDate();
-    var departureDate = moment(departureInput, 'YYYY-MM-DD');
+    var departureDate = moment(departureInput, "DD/MM/YYYY");
     departureDate = departureDate.toDate();
     if (arrivalDate >= departureDate) {
         return false
@@ -353,12 +353,12 @@ function validateDates() {
     var arrivalInput = $("#arrivalDate").val();
     var departureInput = $("#departureDate").val();
 
-    if (!moment(arrivalInput, 'YYYY-MM-DD').isValid()) {
+    if (!moment(arrivalInput, "DD/MM/YYYY").isValid()) {
         //console.log(moment(arrivalInput, "DD/MM/YYYY").isValid())
         return false;
     }
 
-    if (!moment(departureInput, 'YYYY-MM-DD').isValid()) {
+    if (!moment(departureInput, "DD/MM/YYYY").isValid()) {
         return false;
     }
 
@@ -442,7 +442,9 @@ function validateForm() {
         return false;
     }
 
+    // fast change of some properties just before submitting
     un_disable_select_fields()
+    changeDatePickerFormat()
 
     return true;
 }
@@ -464,4 +466,20 @@ function un_disable_select_fields() {
     $('select:disabled').each(function(e) {
         $(this).removeAttr('disabled');
     })
+}
+
+function changeDateFormatFromDisplayToSend(d) {
+    // changes date format from DD/MM/YYYY to YYYY-MM-DD
+    return moment(d, 'DD/MM/YYYY').format('YYYY-MM-DD');
+}
+
+function changeDateFormatFromSendToDisplay(id) {
+    // changes date format from YYYY-MM-DD to DD/MM/YYYY 
+    return moment(d, 'DD/MM/YYYY').format('YYYY-MM-DD');
+}
+
+function changeDatePickerFormat() {
+    // changes format of date pickers
+    $('#arrivalDate').val(changeDateFormatFromDisplayToSend($('#arrivalDate').val()))
+    $('#departureDate').val(changeDateFormatFromDisplayToSend($('#departureDate').val()))
 }

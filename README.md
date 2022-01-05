@@ -26,22 +26,20 @@ In the repository, there are two files, which are nedded by heroku for deploymen
 
 These two files are: `Procfile` and `runtime.txt`.
 
-## Technologies 
+## Technologies
 
-The following technologies were used in the project:
+The following technologies were used in the project (the most important):
 
 * HTML
     * Bootstrap 4
 * JavaScript
     * jQuery
-    * moment
 * Python
     * FastAPI
     * uvicorn
     * asyncio
     * pandas
     * SQLite3
-    * datetime
 * Database
     * SQLite3
 

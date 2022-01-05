@@ -1,2 +1,4 @@
-#!/bin/sh
+#!/bin/bash
+
+source ./virtualenv/bin/activate
 python3 ./database/createDatabase.py './database/database.db'

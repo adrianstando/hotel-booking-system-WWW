@@ -1,0 +1,6 @@
+#!/bin/bash
+
+pip3 install virtualenv
+python3 -m venv ./virtualenv
+source ./virtualenv/bin/activate
+./virtualenv/bin/pip3 install -r requirements.txt

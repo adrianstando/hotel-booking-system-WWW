@@ -1,2 +1,4 @@
-#!/bin/sh
-uvicorn python.main:app
+#!/bin/bash
+
+source ./virtualenv/bin/activate
+uvicorn python.main:app --workers 2

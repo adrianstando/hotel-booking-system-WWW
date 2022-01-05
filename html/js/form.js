@@ -1,3 +1,9 @@
+var lastArrivalValue = new Date();
+lastArrivalValue.setHours(0,0,0,0);
+var lastDepartureValue = new Date();
+lastDepartureValue.setDate(lastDepartureValue.getDate() + 1)
+lastDepartureValue.setHours(0,0,0,0);
+
 jQuery(function () {
     // this script creates arrivalDate date picker
     var date = new Date();
@@ -14,8 +20,21 @@ jQuery(function () {
             uiLibrary: 'bootstrap4',
             minDate: minDate
         }).on("change", function (e) {
-            hideClientData();
-            removeAvailableRooms();
+            let arrivalInput = $("#arrivalDate").val();
+            let departureInput = $("#departureDate").val();
+            var arrivalDate = moment(arrivalInput, "YYYY-MM-DD").toDate()
+            var departureDate = moment(departureInput, "YYYY-MM-DD").toDate()
+
+            if((lastArrivalValue - arrivalDate) != 0){
+                hideClientData();
+                removeAvailableRooms();
+                if(departureDate <= arrivalDate) {
+                    var newDep = moment(arrivalInput, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+                    $("#departureDate").val(newDep);
+                    lastDepartureValue = moment(arrivalInput, "YYYY-MM-DD").add(1, 'days').toDate()
+                }
+                lastArrivalValue = arrivalDate;
+              }
         });
         //datepicker.val(moment(date).format('DD/MM/YYYY'))
         datepicker.val(moment(date).format('YYYY-MM-DD'))
@@ -37,10 +56,27 @@ jQuery(function () {
             startDate: '+1d',
             autoclose: true,
             uiLibrary: 'bootstrap4',
-            minDate: minDate
+            minDate: minDate,
+            disableDates:  function (date) {
+                let arrivalInput = $("#arrivalDate").val();
+                var arrivalDatePlus1 = moment(arrivalInput, "YYYY-MM-DD").add(1, 'days').toDate()
+                if (date < arrivalDatePlus1) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
         }).on("change", function (e) {
-            hideClientData();
-            removeAvailableRooms();
+            let arrivalInput = $("#arrivalDate").val();
+            let departureInput = $("#departureDate").val();
+            var arrivalDate = moment(arrivalInput, "YYYY-MM-DD").toDate()
+            var departureDate = moment(departureInput, "YYYY-MM-DD").toDate()
+
+            if((lastDepartureValue - departureDate) != 0){
+                hideClientData();
+                removeAvailableRooms();
+                lastDepartureValue = departureDate;
+              }
         });
         //datepicker.val(moment(date).format('DD/MM/YYYY'))
         datepicker.val(moment(date).format('YYYY-MM-DD'))

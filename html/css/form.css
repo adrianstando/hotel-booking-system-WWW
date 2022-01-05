@@ -22,3 +22,7 @@
 .gj-picker-bootstrap table tr td.today div {
     color: #6967A3;
 }
+
+#clientData {
+    display: none;
+}

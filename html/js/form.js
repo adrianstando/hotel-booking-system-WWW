@@ -45,6 +45,16 @@ jQuery(function () {
     }
 });
 
+window.onload = function() {
+    document.getElementById('form').onsubmit = function() {
+        return validateFormAndAlert()
+    }
+    
+    document.getElementById('checkAvailabilityButton').onclick = checkAvailability
+}
+
+
+
 // -----------------------------------------------------------------------------
 
 function checkAvailability() {

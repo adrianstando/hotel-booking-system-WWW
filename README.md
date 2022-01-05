@@ -26,6 +26,28 @@ In the repository, there are two files, which are nedded by heroku for deploymen
 
 These two files are: `Procfile` and `runtime.txt`.
 
+## Technologies 
+
+The following technologies were used in the project:
+
+* HTML
+    * Bootstrap 4
+* JavaScript
+    * jQuery
+    * moment
+* Python
+    * FastAPI
+    * uvicorn
+    * asyncio
+    * pandas
+    * SQLite3
+    * datetime
+* Database
+    * SQLite3
+
+The photos are mostly shared on Creative Commons licence in the Internet; the details are in the following file: `./html/items/README.md`. The logo and favicon were created in `GIMP`.
+
+
 ## Project purpose
 
-The final project created during Web Application course at Data Science studies at MiNI, Warsaw University of Technology. 
+It is the final project created during Web Application course at Data Science studies at MiNI, Warsaw University of Technology. 

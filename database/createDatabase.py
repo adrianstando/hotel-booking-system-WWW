@@ -118,7 +118,7 @@ def insert_example_data(path_to_file):
     sql1 = """
     INSERT INTO ROOM_TYPES(type, pricePerNight)
     VALUES
-        ('Single Room', 1500),
+        ('Single Room', 150),
         ('Double Room', 200),
         ('Family Room', 380);
     """

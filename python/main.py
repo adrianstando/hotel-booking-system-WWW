@@ -26,7 +26,7 @@ async def available_rooms(arrivalDate: str, departureDate: str):
     SELECT
         ROOM_TYPES.type AS TYPE,
         SUM(CASE WHEN number IS NULL THEN 0 ELSE 1 END) AS NUMBER,
-        CAST(JULIANDAY(?) - JULIANDAY(?) AS INTEGER) * ROOM_TYPES.pricePerNight AS PRICE
+        ROOM_TYPES.pricePerNight AS PRICE
     FROM
         ROOM_TYPES
         LEFT JOIN (
@@ -57,7 +57,7 @@ async def available_rooms(arrivalDate: str, departureDate: str):
         raise HTTPException(404, e)
 
     parameters = (
-        departureDate, arrivalDate, arrivalDate, departureDate,
+        arrivalDate, departureDate,
         arrivalDate, departureDate, arrivalDate, departureDate
     )
 
@@ -67,10 +67,18 @@ async def available_rooms(arrivalDate: str, departureDate: str):
     conn.close()
 
     return {
-        # "price": df.iloc[0, 1],
-        "numberOfSingleRooms": int(df.loc['Single Room']['NUMBER']),
-        "numberOfDoubleRooms": int(df.loc['Double Room']['NUMBER']),
-        "numberOfFamilyRooms": int(df.loc['Family Room']['NUMBER'])
+        "singleRooms": {
+            "number": int(df.loc['Single Room']['NUMBER']),
+            "price": int(df.loc['Single Room']['PRICE'])
+        },
+        "doubleRooms": {
+            "number": int(df.loc['Double Room']['NUMBER']),
+            "price": int(df.loc['Double Room']['PRICE'])
+        },
+        "familyRooms": {
+            "number": int(df.loc['Family Room']['NUMBER']),
+            "price": int(df.loc['Family Room']['PRICE'])
+        }
     }
 
 

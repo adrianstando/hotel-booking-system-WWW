@@ -10,7 +10,7 @@ from .database.GetConnection import get_connection
 from .as_form_decorator import as_form
 
 app = FastAPI()
-api = FastAPI(openapi_prefix="/api")
+api = FastAPI()
 app.mount("/api", api)
 app.mount("/", StaticFiles(directory="html", html=True), name="html")
 

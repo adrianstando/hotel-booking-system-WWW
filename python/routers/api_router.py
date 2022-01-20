@@ -231,7 +231,7 @@ async def new_reservation(reservation: Reservation = Depends(Reservation.as_form
 
         send_email(reservation.name, reservation.surname, reservation.arrivalDate, reservation.departureDate, reservation.email)
 
-        return RedirectResponse("/booking_success.html", status_code=302)
+        return RedirectResponse("/booking_success", status_code=302)
     except Exception as e:
         return PlainTextResponse(str(e), status_code=400)
     finally:

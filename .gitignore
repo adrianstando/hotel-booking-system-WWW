@@ -2,3 +2,4 @@
 /.idea
 /python/__pycache__
 /python/database/__pycache__
+/python/routers/__pycache__

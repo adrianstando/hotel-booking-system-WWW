@@ -5,7 +5,7 @@
     rgba(0, 0, 0, 0.6),
     rgba(0, 0, 0, 0.6)
   ),
-  url('../items/beach.jpg');
+  url('/items/beach.jpg');
   background-repeat:no-repeat;
   background-position: center center;
   background-size: cover;

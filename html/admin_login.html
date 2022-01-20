@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <link rel="stylesheet" href="/css/header.css">
+    <script src="/js/load_header_admin.js"></script>
+
+    <link rel="stylesheet" href="/css/empty_row.css">
+
+    <link rel="stylesheet" href="/css/admin_login.css">
+
+    <link rel="stylesheet" href="/css/website_height.css">
+
+    <link rel="icon" type="image/x-icon" href="/items/icon.png">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <header id="header_element"></header>
+
+    <div class="container-fluid hotel-description">
+        <div class="col-xl-4 offset-xl-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-10 offset-xs-1">
+
+            <div class="row empty-row"></div>
+
+            <form action="/admin/auth/token" method="post">
+                <h2 class="text-center">Log in</h2>   
+
+                <div class="row empty-row"></div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <span class="fa fa-user"></span>
+                            </span>                    
+                        </div>
+                        <input type="text" class="form-control" name="username" placeholder="Username" required="required">				
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-lock"></i>
+                            </span>                    
+                        </div>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required="required">				
+                    </div>
+                </div>   
+                
+                <div class="row empty-row"></div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary login-btn btn-block">Log in</button>
+                </div>
+                
+            </form>
+
+            <div class="row empty-row"></div>
+
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+.btn {
+    color: #E1EF7E;
+    font-size: large;
+    background-color: #6967A3;
+    border-color: #6967A3;
+}
+
+.btn:hover {
+    text-decoration: underline;
+    color: #E1EF7E;
+    text-underline-position: under;
+    background-color: #6967A3;
+    border-color: #6967A3;
+} 

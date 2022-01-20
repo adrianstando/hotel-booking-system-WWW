@@ -34,3 +34,5 @@ uvloop==0.16.0
 watchgod==0.7
 websockets==10.1
 zope.interface==5.4.0
+fastapi-login==1.7.3
+

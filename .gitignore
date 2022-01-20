@@ -3,3 +3,4 @@
 /python/__pycache__
 /python/database/__pycache__
 /python/routers/__pycache__
+/.env

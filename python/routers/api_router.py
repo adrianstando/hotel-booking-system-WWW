@@ -7,6 +7,7 @@ from fastapi import HTTPException, Depends
 
 from ..database.GetConnection import get_connection
 from .as_form_decorator import as_form
+from ..send_email import send_email
 
 api = APIRouter()
 
@@ -227,6 +228,8 @@ async def new_reservation(reservation: Reservation = Depends(Reservation.as_form
             c.execute(sql_insert_reservation, parameters)
 
         conn.commit()
+
+        send_email(reservation.name, reservation.surname, reservation.arrivalDate, reservation.departureDate, reservation.email)
 
         return RedirectResponse("/booking_success.html", status_code=302)
     except Exception as e:

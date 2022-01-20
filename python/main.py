@@ -1,13 +1,16 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from starlette.responses import FileResponse
+from starlette.responses import FileResponse, RedirectResponse
 import uvicorn
 
-from .routers import api_router
+from .routers import api_router, admin_router
 
 app = FastAPI()
+api = FastAPI()
 
 app.include_router(api_router.api, prefix="/api")
+app.include_router(admin_router.admin, prefix="/admin")
+
 app.mount("/js", StaticFiles(directory="html/js"), name="js")
 app.mount("/css", StaticFiles(directory="html/css"), name="css")
 app.mount("/items", StaticFiles(directory="html/items"), name="items")
@@ -37,6 +40,11 @@ async def read_rooms():
 @app.get("/booking_success")
 async def read_rooms():
     return FileResponse('html/booking_success.html')
+
+
+@api.get("/hello")
+async def root():
+    return {"message": "Hello World"}
 
 
 if __name__ == "__main__":

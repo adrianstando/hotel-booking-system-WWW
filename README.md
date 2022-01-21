@@ -4,15 +4,15 @@
 
 This is a web application for booking hotel rooms. 
 
-The website is available online: [https://hotel-booking-system-project.herokuapp.com/](https://hotel-booking-system-project.herokuapp.com/)
+The website is available on the Internet: [https://hotel-booking-system-project.herokuapp.com/](https://hotel-booking-system-project.herokuapp.com/)
 
-The application consists of two modules. The first is a publicly visible website, which is available on `/` endpoint. It contains information about the hotel and has a booking form. The second module is for administrators and is available in `/admin` endpoint. You have to log in to see the details - admin panel is not available for unlogged user.
+The application consists of two modules. The first is a publicly visible website, which is available on `/` endpoint. It contains information about the hotel and has a booking form. The second module is for administrator and is available on `/admin` endpoint. You have to log in to see the details - admin panel is not available for unlogged user.
 
 ## Run the application locally
 
 1. To run the application locally you need to have `Python 3` installed.
 
-2. Moreover, you have to set environment variables or create a file named`.env` in main directory with variables:
+2. Moreover, you have to set environment variables or create a file named `.env` in main directory with variables:
 
     `EMAIL_ADDRESS=name@gmail.com`
 
@@ -67,7 +67,7 @@ The following technologies and libraries were used in the project:
 * Database
     * SQLite3
 
-The photos are mostly shared on Creative Commons licence in the Internet; the details are in the following file: `./html/items/README.md`. The logo and favicon were created in `GIMP`.
+The photos are mostly shared on Creative Commons licence on the Internet; the details are in the following file: `./html/items/README.md`. The logo and favicon were created in `GIMP`.
 
 
 ## Project purpose

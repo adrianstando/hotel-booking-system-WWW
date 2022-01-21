@@ -9,7 +9,6 @@ import pandas as pd
 from dotenv import load_dotenv
 from ..database.GetConnection import get_connection
 
-
 admin = APIRouter()
 SECRET = os.urandom(24).hex()
 manager = LoginManager(SECRET,
@@ -27,7 +26,6 @@ async def read_index():
 
 @admin.get("/panel")
 async def read_index(user=Depends(manager)):
-#async def read_index():
     return FileResponse('html/admin_panel.html')
 
 
@@ -70,7 +68,6 @@ async def logout():
 
 @admin.get('/reservations/{arrivalDate}/{departureDate}')
 async def reservations(arrivalDate: str, departureDate: str, user=Depends(manager)):
-#async def reservations(arrivalDate: str, departureDate: str):
     sql = """
     SELECT
         RESERVATIONS.id AS ID,
@@ -101,11 +98,8 @@ async def reservations(arrivalDate: str, departureDate: str, user=Depends(manage
          date(RESERVATIONS.departureDate) > date(?));
     """
 
-    def fail_to_login_admin_redirect(request, exc):
-        response = RedirectResponse('/admin', status_code=302)
-        return response
-
-    #return fail_to_login_admin_redirect(1, 1)
+    # for tests - login authorization
+    # raise HTTPException(status_code=401)
 
     # validate date format
     validate_date_format(arrivalDate)
@@ -122,6 +116,27 @@ async def reservations(arrivalDate: str, departureDate: str, user=Depends(manage
     )
 
     df = pd.read_sql(sql, conn, params=parameters)
+    conn.close()
+
+    return df.to_dict(orient='index')
+
+
+@admin.get('/numberOfAllRooms')
+def number_of_rooms(user=Depends(manager)):
+    sql = """
+    SELECT ROOM_TYPES.type, COUNT(*) AS NUMBER
+    FROM ROOMS
+    LEFT JOIN ROOM_TYPES ON ROOMS.roomTypeId = ROOM_TYPES.id
+    GROUP BY ROOM_TYPES.type;
+    """
+
+    try:
+        conn = get_connection()
+    except Exception as e:
+        raise HTTPException(404, e)
+
+    df = pd.read_sql(sql, conn)
+    df = df.set_index('type')
     conn.close()
 
     return df.to_dict(orient='index')

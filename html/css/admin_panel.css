@@ -3,8 +3,14 @@
 .confirm-button:active:focus {
     background-color: #6967A3 !important;
     border-color: #6967A3 !important;
-    color: white !important;
+    color: #E1EF7E !important;
 }
+
+.confirm-button:hover {
+    text-decoration: underline;
+    color: #E1EF7E;
+    text-underline-position: under;
+} 
 
 .datepicker a{
     background: #6967A3;

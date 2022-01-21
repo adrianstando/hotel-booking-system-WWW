@@ -6,6 +6,7 @@ from starlette.responses import FileResponse, RedirectResponse
 import os
 import datetime
 import pandas as pd
+from dotenv import load_dotenv
 from ..database.GetConnection import get_connection
 
 
@@ -17,8 +18,6 @@ manager = LoginManager(SECRET,
                        use_header=False,
                        cookie_name='access-token'
                        )
-
-login_db = {'admin': {'password': 'admin'}}
 
 
 @admin.get("/")
@@ -34,8 +33,11 @@ async def read_index(user=Depends(manager)):
 
 @manager.user_loader()
 async def load_user(username: str):
-    user = login_db.get(username)
-    return user
+    load_dotenv()
+    if username != os.getenv('ADMIN_LOGIN'):
+        return None
+    else:
+        return {'password': os.getenv('ADMIN_PASSWORD')}
 
 
 @admin.post('/auth/token')
@@ -99,6 +101,12 @@ async def reservations(arrivalDate: str, departureDate: str, user=Depends(manage
          date(RESERVATIONS.departureDate) > date(?));
     """
 
+    def fail_to_login_admin_redirect(request, exc):
+        response = RedirectResponse('/admin', status_code=302)
+        return response
+
+    #return fail_to_login_admin_redirect(1, 1)
+
     # validate date format
     validate_date_format(arrivalDate)
     validate_date_format(departureDate)
@@ -116,9 +124,7 @@ async def reservations(arrivalDate: str, departureDate: str, user=Depends(manage
     df = pd.read_sql(sql, conn, params=parameters)
     conn.close()
 
-    return {
-        "html_table": df.to_html(index=False, table_id='table', classes='table', justify='center')
-    }
+    return df.to_dict(orient='index')
 
 
 def validate_date_format(date_text):

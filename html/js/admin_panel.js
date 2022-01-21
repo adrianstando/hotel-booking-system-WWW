@@ -132,6 +132,9 @@ function showData() {
 
     try {
         let res = fetch(url).then((response) => {
+            if(response.redirected) {
+                window.location.replace(response.url);
+            }
             if (response.ok) {
                 return response.json();
             } else {
@@ -144,11 +147,20 @@ function showData() {
             var pieChart = document.getElementById("pieChartDiv");
             pieChart.innerHTML = "";
 
-            theDiv.innerHTML = data.html_table;
+            if( jQuery.isEmptyObject(data) ){
+                theDiv.innerHTML = "There is no data to show!";
+                return
+            }
 
-            var t = document.getElementById("table");
+            let table = document.createElement('table');
+            table.id = 'table_reservations'
+            theDiv.appendChild(table);
+            generate_table(data, 'table_reservations')
+
+
+
+            var t = document.getElementById('table_reservations');
             t.classList.add('table')
-            t.classList.remove('dataframe')
             t.classList.add('table-striped')
             t.classList.add('table-bordered')
             t.classList.add('table-sm')
@@ -156,17 +168,16 @@ function showData() {
             t.setAttribute('cellspacing', '0');
             t.setAttribute('width', '100%');
 
-            t.removeAttribute('border');
-
             $(document).ready(function () {
-                $('#table').DataTable({
+                $('#table_reservations').DataTable({
                     "scrollX": true,
                     "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
                 });
                 $('.dataTables_length').addClass('bs-select');
             });
 
-            //if all not zero
+            
+
             JSC.chart('pieChartDiv', {
                 legend_visible: false,
                 title_position: 'center',
@@ -209,14 +220,12 @@ function showData() {
             console.log(error)
             var theDiv = document.getElementById("table_div");
             theDiv.innerHTML = error.toString();
-            theDiv.innerHTML += ' Try to log out and log in.'
             hide_chars()
         });
     } catch (error) {
         console.log(error);
         var theDiv = document.getElementById("table_div");
         theDiv.innerHTML = error.toString();
-        theDiv.innerHTML += ' Try to log out and log in.'
         hide_chars()
     }
 }
@@ -239,3 +248,44 @@ function validateDates() {
 }
 
 
+
+function generate_table(data_in, table_id){
+    /*let mountains = {
+        0:{ name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
+        1:{ name: "Monte Falterona", height: 1654, place: "Parco Foreste Casentinesi" },
+        2:{ name: "Poggio Scali", height: 1520, place: "Parco Foreste Casentinesi" },
+        3:{ name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
+        4:{ name: "Monte Amiata", height: 1738, place: "Siena" }
+    };*/
+
+    let mountains = data_in;
+
+
+    function generateTableHead(table, data) {
+        let thead = table.createTHead();
+        let row = thead.insertRow();
+        for (let key of data) {
+            let th = document.createElement("th");
+            let text = document.createTextNode(key);
+            th.appendChild(text);
+            row.appendChild(th);
+        }
+    }
+
+    function generateTable(table, data) {
+        
+        for (element in data) {
+            let row = table.insertRow();
+            for (key in data[element]) {
+                let cell = row.insertCell();
+                let text = document.createTextNode(data[element][key]);
+                cell.appendChild(text);
+            }
+        }
+    }
+
+    let table = document.getElementById(table_id);
+    let data_0 = Object.keys(mountains[0]);
+    generateTable(table, mountains);
+    generateTableHead(table, data_0);
+}

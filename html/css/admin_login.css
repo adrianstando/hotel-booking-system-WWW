@@ -1,14 +1,13 @@
-.btn {
-    color: #E1EF7E;
-    font-size: large;
-    background-color: #6967A3;
-    border-color: #6967A3;
+.btn, 
+.btn:hover, 
+.btn:active:focus {
+    background-color: #6967A3 !important;
+    border-color: #6967A3 !important;
+    color: #E1EF7E !important;
 }
 
 .btn:hover {
     text-decoration: underline;
     color: #E1EF7E;
     text-underline-position: under;
-    background-color: #6967A3;
-    border-color: #6967A3;
 } 

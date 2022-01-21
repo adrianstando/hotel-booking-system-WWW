@@ -17,6 +17,14 @@ app.mount("/items", StaticFiles(directory="html/items"), name="items")
 app.mount("/common", StaticFiles(directory="html/common"), name="common")
 
 
+def fail_to_login_admin_redirect(request, exc):
+    response = RedirectResponse('/admin', status_code=302)
+    return response
+
+
+app.add_exception_handler(401, fail_to_login_admin_redirect)
+
+
 @app.get("/")
 async def read_index():
     return FileResponse('html/index.html')

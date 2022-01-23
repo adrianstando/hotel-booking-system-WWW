@@ -8,7 +8,7 @@ import os
 def send_email(name, surname, arrival, departure, email):
     load_dotenv()
 
-    mail_content = f"Good morning {name} {surname}, \n \n " \
+    mail_content = f"Good morning {name} {surname}, \n \n" \
                    f"We confirm your reservation at the hotel from {arrival} to {departure}. \n" \
                    f"Thank you for choosing our hotel. If you have any questions, please do not hesitate to contact us.\n \n" \
                    f"Best Regards, \nHotel Mare"

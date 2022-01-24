@@ -19,12 +19,12 @@ manager = LoginManager(SECRET,
                        )
 
 
-@admin.get("/")
+@admin.get("/", summary='Read admin login page')
 async def read_index():
     return FileResponse('html/admin_login.html')
 
 
-@admin.get("/panel")
+@admin.get("/panel", summary='Read admin panel page')
 async def read_index(user=Depends(manager)):
     return FileResponse('html/admin_panel.html')
 
@@ -38,7 +38,7 @@ async def load_user(username: str):
         return {'password': os.getenv('ADMIN_PASSWORD')}
 
 
-@admin.post('/auth/token')
+@admin.post('/auth/token', summary='Authenticate admin')
 async def login(data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
@@ -59,14 +59,14 @@ async def login(data: OAuth2PasswordRequestForm = Depends()):
     return response
 
 
-@admin.get('/logout')
+@admin.get('/logout', summary='Logout admin')
 async def logout():
     response = RedirectResponse('/admin')
     response.delete_cookie('access-token''')
     return response
 
 
-@admin.get('/reservations/{arrivalDate}/{departureDate}')
+@admin.get('/reservations/{arrivalDate}/{departureDate}', summary='Read reservations for admin')
 async def reservations(arrivalDate: str, departureDate: str, user=Depends(manager)):
     sql = """
     SELECT
@@ -121,7 +121,7 @@ async def reservations(arrivalDate: str, departureDate: str, user=Depends(manage
     return df.to_dict(orient='index')
 
 
-@admin.get('/numberOfAllRooms')
+@admin.get('/numberOfAllRooms', summary='Read number of all rooms in the hotel')
 def number_of_rooms(user=Depends(manager)):
     sql = """
     SELECT ROOM_TYPES.type, COUNT(*) AS NUMBER

@@ -18,7 +18,7 @@ async def root():
     return {"message": "Hello World"}
 
 
-@api.get("/available_rooms/{arrivalDate}/{departureDate}")
+@api.get("/available_rooms/{arrivalDate}/{departureDate}", summary='Read reservations')
 async def available_rooms(arrivalDate: str, departureDate: str):
     sql = """
     SELECT
@@ -97,7 +97,7 @@ class Reservation(BaseModel):
     country: str
 
 
-@api.post("/new_reservation")
+@api.post("/new_reservation", summary='Make a new reservation')
 async def new_reservation(reservation: Reservation = Depends(Reservation.as_form)):
     # validate date format
     validate_date_format(reservation.arrivalDate)

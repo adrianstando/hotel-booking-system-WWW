@@ -25,32 +25,32 @@ def fail_to_login_admin_redirect(request, exc):
 app.add_exception_handler(401, fail_to_login_admin_redirect)
 
 
-@app.get("/")
+@app.get("/", summary='Read main page')
 async def read_index():
     return FileResponse('html/index.html')
 
 
-@app.get("/rooms")
+@app.get("/rooms", summary='Read rooms page')
 async def read_rooms():
     return FileResponse('html/rooms.html')
 
 
-@app.get("/form")
+@app.get("/form", summary='Read form page')
 async def read_rooms():
     return FileResponse('html/form.html')
 
 
-@app.get("/contact")
+@app.get("/contact", summary='Read contact page')
 async def read_rooms():
     return FileResponse('html/contact.html')
 
 
-@app.get("/booking_success")
+@app.get("/booking_success", summary='Read booking success page')
 async def read_rooms():
     return FileResponse('html/booking_success.html')
 
 
-@api.get("/hello")
+@api.get("/hello", summary='Hello world endpoint')
 async def root():
     return {"message": "Hello World"}
 

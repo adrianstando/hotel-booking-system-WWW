@@ -258,9 +258,9 @@ function generate_charts(reservedRooms, allRooms) {
                 id: 's1',
                 palette: ['#00FF00'],
                 points: [
-                    { x: 'Single room', y: allRooms['Single Room'] },
-                    { x: 'Double room', y: allRooms['Double Room'] },
-                    { x: 'Family room', y: allRooms['Family Room'] }
+                    { x: 'Single room', y: allRooms['Single Room'] - reservedRooms['Single Room'] },
+                    { x: 'Double room', y: allRooms['Double Room'] - reservedRooms['Double Room'] },
+                    { x: 'Family room', y: allRooms['Family Room'] - reservedRooms['Family Room']}
                 ]
             },
             {
